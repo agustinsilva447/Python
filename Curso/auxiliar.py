@@ -1,3 +1,2 @@
-import numpy as np
-tablero = np.ones([3, 3])
-print(np.all(tablero!=0))
+import random
+print("Descuento del %{:.0f}".format(100 * random.uniform(0.05, 0.4)))
