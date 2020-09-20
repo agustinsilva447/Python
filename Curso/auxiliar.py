@@ -1,5 +1,15 @@
-def f_descuento(self, total_desc, descuentos, codigo, precio):
-    total_desc += descuentos[codigo] * precio
-    precio = (1 - descuentos[codigo]) * precio
-    print("Articulo con un descuento del %{:.2f}. Precio con descuento: ${:.2f}".format(100 * descuentos[codigo], precio))
-    return total_desc, precio
+import unittest
+
+class RomanNumber(object):
+    def int_to_roman(self, n):
+        return 'I'
+class RomanNumberTest(unittest.TestCase):
+    def setUp(self):
+        self.roman_number = RomanNumber()
+    
+    def test_one_to_roman(self):
+        roman_number = self.roman_number.int_to_roman(1)
+        self.assertEqual('I', roman_number)    
+
+if __name__ == '__main__':
+    unittest.main()
