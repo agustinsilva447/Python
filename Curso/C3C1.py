@@ -46,39 +46,40 @@ class CajaRegistradora(object):
             precio, articulos = self.f_precios(codigo, articulos)
             total_desc, precio, descuentos = self.f_descuentos(codigo, descuentos, total_desc, precio)
             total_pesos += precio
-            print("Subtotal: ${:.2f} \n".format(total_pesos))
+            print("Subtotal: ${:.2f}".format(total_pesos))
 
         return flag, articulos, total_desc, total_pesos
 
     def f_pago(self, cliente, total_pesos):
+        print(" ")
         if cliente >= total_pesos:
             vuelto = cliente - total_pesos
-            print(" ")
             print("Su vuelto: ${:.2f}. ¡Gracias vuelva pronto!".format(vuelto))
             flag = True
             return flag
         else:
             print("Dinero no suficiente.")
-            return False
-
-    articulos = {}
-    descuentos = {}
-    total_pesos = 0
-    total_desc = 0
+            return False    
 
     def comenzar_caja(self):
+        articulos = {}
+        descuentos = {}
+        total_pesos = 0
+        total_desc = 0
+
         flag = True
         while flag:
-            print("Agregue el código del artículo o ingrese la tecla f para finalizar:")
+            print("\nAgregue el código del artículo o ingrese la tecla 'f' para finalizar:")
             codigo = input()
-            flag, articulos, total_desc, total_pesos = self.f_transaccion(flag, codigo, self.articulos, self.descuentos, self.total_desc, self.total_pesos)
+            flag, articulos, total_desc, total_pesos = self.f_transaccion(flag, codigo, articulos, descuentos, total_desc, total_pesos)
 
         print(articulos)
-        print("Total descuentos aplicados: ${:.2f}".format(total_desc))
+        print("Total sin descuentos aplicados: ${:.2f}".format(total_pesos + total_desc))
+        print("Total de descuentos aplicados: ${:.2f}".format(total_desc))
 
         flag = False
         while not flag:
-            print("El precio total es: ${:.2f}. ¿Con cuánto desea abonar?".format(total_pesos))
+            print("Total con descuentos aplicados: ${:.2f}. ¿Con cuánto desea abonar?".format(total_pesos))
             cliente = float(input())
             flag = self.f_pago(cliente, total_pesos)
 
@@ -123,5 +124,13 @@ class CajaRegistradoraTest(unittest.TestCase):
         caja = self.caja.f_pago(self.cliente_test, 60)
         self.assertEquals(False, caja)    
 
-if __name__ == '__main__':
-    unittest.main()        
+if __name__ == '__main__':        
+	print("Si desea ejecutar el programa presione 'p' y si desea correr los tests presione 't':")
+	exe = input()
+	if exe == 'p':
+		ejecutar = CajaRegistradora()
+		ejecutar.comenzar_caja()
+	elif exe == 't':
+		unittest.main()
+	else:
+		print("Usted a ingresado una opción incorrecta. Opciones valida 'p' o 't'.")
