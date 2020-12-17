@@ -1,19 +1,9 @@
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column, Integer, String, Sequence, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, Sequence, ForeignKey
 from sqlalchemy.orm import sessionmaker, relationship
+from sqlalchemy.ext.declarative import declarative_base
 
 engine = create_engine('sqlite:///:memory:')
 Base = declarative_base()
-
-class Curso(Base):
-    __tablename__ = 'curso'
-    id = Column(Integer, Sequence('curso_id_seq'), primary_key=True)
-    name = Column(String)
-    alumnos = relationship("Alumno", order_by="Alumno.id", back_populates="curso")
-    horarios = relationship("Horario", order_by="Horario.id", back_populates="curso")
-    def __repr__(self):
-        return "{}".format(self.name)
 
 class Alumno(Base):
     __tablename__ = 'alumno'
@@ -24,6 +14,24 @@ class Alumno(Base):
     curso = relationship("Curso", back_populates="alumnos")
     def __repr__(self):
         return "{} {}".format(self.firstname, self.lastname)
+
+class Profesor(Base):
+    __tablename__ = 'profesor'
+    id = Column(Integer, primary_key=True)
+    firstname = Column(String)
+    lastname = Column(String)
+    horarios = relationship("Horario", back_populates="profesor")
+    def __repr__(self):
+        return "{} {}".format(self.firstname, self.lastname)
+        
+class Curso(Base):
+    __tablename__ = 'curso'
+    id = Column(Integer, Sequence('curso_id_seq'), primary_key=True)
+    name = Column(String)
+    alumnos = relationship("Alumno", order_by="Alumno.id", back_populates="curso")
+    horarios = relationship("Horario", order_by="Horario.id", back_populates="curso")
+    def __repr__(self):
+        return "{}".format(self.name)
 
 class Horario(Base):
     __tablename__ = 'horario'
@@ -37,15 +45,6 @@ class Horario(Base):
     profesor = relationship("Profesor", back_populates="horarios")
     def __repr__(self):
         return "{} de {} a {}".format(self.dia, self.hora_inicio, self.hora_termino)
-
-class Profesor(Base):
-    __tablename__ = 'profesor'
-    id = Column(Integer, primary_key=True)
-    firstname = Column(String)
-    lastname = Column(String)
-    horarios = relationship("Horario", back_populates="profesor")
-    def __repr__(self):
-        return "{} {}".format(self.firstname, self.lastname)
 
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
