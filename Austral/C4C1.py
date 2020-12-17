@@ -102,23 +102,23 @@ session.add(profesor_miguel)
 session.add(profesora_gustavo)
 session.commit()
 
-print('1: Exporta los alumnos de Física')
+print('1 -> Exporta los alumnos de Física:')
 for curso, alumno in session.query(Curso, Alumno).\
             filter(Curso.id==Alumno.curso_id).\
             filter(Curso.name=='Física').\
             all():
-    print(alumno,"\n")
+    print(alumno)
 
-print('2: Exporta los horarios del profesor Gustavo Zabaleta')
+print('2 -> Exporta los horarios del profesor Gustavo Zabaleta:')
 for profesor, horario in session.query(Profesor, Horario).\
             filter(Profesor.id==Horario.profesor_id).\
             filter(Profesor.firstname=='Miguel').\
             all():
-    print(horario,"\n")
+    print(horario)
 
-print('3: Exporta los horarios de Programación')
+print('3 -> Exporta los horarios de Programación:')
 for curso, horario in session.query(Curso, Horario).\
             filter(Curso.id==Horario.curso_id).\
             filter(Curso.name=='Programación').\
             all():
-    print(horario,"\n")
+    print(horario)
